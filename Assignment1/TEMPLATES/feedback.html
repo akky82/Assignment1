@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Customer Feedback{% endblock %}
+{% block heading %}Customer Feedback{% endblock %}
+<!-- Start content -->
+{% block content %}
+<div class="container">
+  <div class="row">
+    This page allows you to leave a comment or provide feedback regarding our services.
+  </div>
+  <br>
+<form action="" method="post">
+{% csrf_token %}
+<!--{{ form.as_p}} -->
+  <div class="row">
+    <div class="label-wrapper">
+      <label for="{{ form.firstName.id_for_label }}">First Name</label>
+    </div>
+    <div class="input-wrapper">
+      {{ form.firstName }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="label-wrapper">
+      <label for="{{ form.lastName.id_for_label }}">Last Name</label>
+    </div>
+    <div class="input-wrapper">
+      {{ form.lastName }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="label-wrapper">
+      <label for="{{ form.email.id_for_label }}">E-mail</label>
+    </div>
+    <div class="input-wrapper">
+      {{ form.email }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="label-wrapper">
+      <label for="{{ form.feedback.id_for_label }}">Feedback</label>
+    </div>
+    <div class="input-wrapper">
+      {{ form.feedback }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="label-wrapper"></div>
+    <div class="input-wrapper">
+      <input type="submit" value="Submit">&nbsp<input type="reset" value="Reset">
+    </div>
+  </div>
+</form>
+</div>
+<!-- End content -->
+{% endblock %}

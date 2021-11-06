@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DWS - {% block title %}{% endblock %}</title>
+
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+<h1>Django Weather Services - {% block heading %}{% endblock %}</h1>
+{% include 'includes/navbar.html' %}
+<br><br><br>
+{% block content %}{% endblock %}
+</body>
+</html>

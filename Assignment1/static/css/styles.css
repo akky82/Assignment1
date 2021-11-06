@@ -1,0 +1,119 @@
+:root {
+  font-size: 16px;
+  font-family: 'Open Sans';
+  --text-primary: #042474;
+  --text-secondary: #777777;
+  --bg-primary: #d9e9ff;
+  --bg-comment1: #dddddd;
+  --bg-comment2: #eeeeee;
+}
+
+body {
+  color: var(--text-primary);
+  background-color: white;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+main {
+  margin-left: 5rem;
+  padding: 1rem;
+}
+
+.navbar {
+  position: fixed;
+  background-color: var(--bg-primary);
+}
+
+.navbar-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar-item {
+    text-align: right;
+    margin: 0.25rem 2rem;
+    position: relative;
+}
+
+.navbar-link {
+    display: flex;
+    alight-items: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.navbar-link:hover {
+    color: var(--text-primary);
+}
+
+.container {
+  width: 60%;
+  border-radius: 6px;
+  background-color: var(--bg-comment2);
+  padding: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.label-wrapper {
+  width: 15%;
+  margin: 6px;
+  float: left;
+}
+
+.input-wrapper {
+  width: 45%;
+  margin: 6px;
+  float: left;
+}
+
+input[type=submit], reset {
+  background-color: var(--text-primary);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+input[type=reset] {
+  background-color: var(--text-primary);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+input[type=reset]:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+textarea {
+  resize: none;
+}
+
+.comment1 {
+  background-color: var(--bg-comment1);
+  width: 55%;
+}
+
+.comment2 {
+  background-color: var(--bg-comment2);
+  width: 55%;
+}

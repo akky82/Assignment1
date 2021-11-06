@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Weather{% endblock %}
+{% block heading %}Weather{% endblock %}
+<!-- Start content -->
+{% block content %}
+<div class="container">
+    <div class="row">
+      Enter the longitude and latitude co-ordinates to see the weather in that area. For South and West co-ordinates, please prefix it with a minus (-) symbol.
+    </div>
+    <br>
+  <form action="" method="post">
+  {% csrf_token %}
+    <div class="row">
+      <div class="label-wrapper">
+        <label for="{{ form.latitude.id_for_label }}">Latitude</label>
+      </div>
+      <div class="input-wrapper">
+        {{ form.latitude }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="label-wrapper">
+        <label for="{{ form.longitude.id_for_label }}">Longitude</label>
+      </div>
+      <div class="input-wrapper">
+        {{ form.longitude }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="label-wrapper"></div>
+      <div class="input-wrapper">
+        <input type="submit" value="Submit">&nbsp<input type="reset" value="Reset">
+      </div>
+    </div>
+  </form>
+</div>
+<!-- End content -->
+{% endblock %}
