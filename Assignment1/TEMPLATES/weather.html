@@ -2,14 +2,19 @@
 {% load static %}
 {% block title %}Weather{% endblock %}
 {% block heading %}Weather{% endblock %}
+{% block jquery %}
+<script src="{% static 'js/weather-jquery.js' %}"></script>
+{% endblock %}
 <!-- Start content -->
 {% block content %}
 <div class="container">
-    <div class="row">
-      Enter the longitude and latitude co-ordinates to see the weather in that area. For South and West co-ordinates, please prefix it with a minus (-) symbol.
+    <div class="body-text">
+      Enter the longitude and latitude co-ordinates to see the weather in that area.<br><br>
+      <b>Note:</b> For South latitudes and West longitudes, please prefix it with a minus (-) symbol.<br><br>
+      eg. <b>27.3190° S, 153.0340° E</b> would be <b>-27.3190, 153.0340</b>
     </div>
     <br>
-  <form action="" method="post">
+  <form action="" name="weather" method="post" onSubmit="return ValidateWeather();">
   {% csrf_token %}
     <div class="row">
       <div class="label-wrapper">
@@ -30,10 +35,50 @@
     <div class="row">
       <div class="label-wrapper"></div>
       <div class="input-wrapper">
-        <input type="submit" value="Submit">&nbsp<input type="reset" value="Reset">
+        <input type="submit" onclick="submit" value="Submit">&nbsp<input type="reset" value="Reset">
       </div>
     </div>
   </form>
+  {% if messages %}
+  {% for message in messages %}
+    <br><div class="body-text">{{ message|safe }}</div><br>
+  {% endfor %}
+  {% endif %}
+  <br><hr><br>
+  {% if weather %}
+  {% if name != "" %}
+  <div class="row">
+      <div class="label-wrapper">Location</div><div class="input-wrapper">{{ weather.name }}</div>
+  </div>
+  {% endif %}
+  <div class="row">
+      <div class="label-wrapper">Latitude</div><div class="input-wrapper">{{ weather.lat }}</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Longitude</div><div class="input-wrapper">{{ weather.lon }}</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Local time</div><div class="input-wrapper">{{ weather.time }} ({{ weather.timezone }})</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Conditions</div><div class="input-wrapper">{{ weather.desc }}</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Current Temp</div><div class="input-wrapper">{{ weather.curr }}&#8451;</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Feels Like</div><div class="input-wrapper">{{ weather.feels }}&#8451;</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Forecast Min</div><div class="input-wrapper">{{ weather.min }}&#8451;</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Forecast Max</div><div class="input-wrapper">{{ weather.max }}&#8451;</div>
+  </div>
+  <div class="row">
+      <div class="label-wrapper">Humidity</div><div class="input-wrapper">{{ weather.humidity }}%</div>
+  </div>
+  {% endif %}
 </div>
 <!-- End content -->
 {% endblock %}

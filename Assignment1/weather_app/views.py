@@ -1,18 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.views import View
-from datetime import datetime
+from django.contrib import messages
 from .forms import FeedbackForm, WeatherForm
-import os
 import json
-import requests
+from . import functions
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-
-api_key = "6a0c0dd6f5fe299a55e79d388afb256f"
-lat, lon = "", ""
-url = "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s" \
-      "&exclude=current,minute,hourly,alerts&units=metric&appid=%s" % (lat, lon, api_key)
 
 
 def home(request):
@@ -27,62 +19,65 @@ def future(request):
     return render(request, 'future.html')
 
 
+def disclaimer(request):
+    return render(request, 'disclaimer.html')
+
+
+def privacy(request):
+    return render(request, 'privacy.html')
+
+
 class FeedbackView(View):
+    @csrf_exempt
     def get(self, request):
-        file_path = 'weather_app/feedback.json'
+        feedback = functions.get_feedback()
 
-        # Check if the feedback file is not empty, then print the comments
-        if os.path.getsize(file_path) > 0:
-            with open(file_path, 'r') as f:
-                feedback = json.load(f)
-                for x in feedback['feedback']:
-                    print(x)
-                    print(feedback['feedback'][0]['firstName'] + " "
-                          + feedback['feedback'][0]['lastName'][0] + " - "
-                          + feedback['feedback'][0]['time'])
-                    print(feedback['feedback'][0]['feedback'])
-            print(feedback)
         form = FeedbackForm()
-        return render(request, 'feedback.html', {'form': form})
+        # Pass the feedback comments to the template
+        return render(request, 'feedback.html', {'form': form, 'feedback': feedback})
 
+    @csrf_exempt
     def post(self, request):
-        file_path = 'weather_app/feedback.json'
+        feedback = ""
         # Get the form data and format to json then dict
-        data = json.dumps(request.POST, indent=4)
-        json_data = json.loads(data)
-        # Get current time/date and append to the dict
-        curr_time = datetime.now()
-        format_time = {'time': curr_time.strftime("%d/%m/%Y %H:%M:%S")}
-        json_data.update(format_time)
+        form_data = FeedbackForm(request.POST)
+        if form_data.is_valid():
+            data = json.dumps(request.POST, indent=4)
+            json_data = json.loads(data)
 
-        # Write the json to the comments file
-        with open(file_path, 'r+') as f:
-            # if the file is empty for some reason, add the
-            if os.path.getsize(file_path) == 0:
-                json_init = "{\"feedback\": []}"
-                file_data = json.loads(json_init)
-            else:
-                # read the file and append the new feedback, format to json and write to file
-                file_data = json.load(f)
+            # Save new feedback and return appended feedback to be rendered
+            feedback = functions.save_feedback(json_data)
 
-            file_data["feedback"].append(json_data)
-            new_data = json.dumps(file_data, indent=4)
-            f.seek(0)
-            f.write(new_data)
-
-            ''' I realise after writing this that I could've just have the json file start
-            with [] to have the whole file as an array, and not had the feedback element 
-            with an array in it at all, however left is this way for reference and practice'''
+            messages.success(request, "Thank you for your feedback, a team member"
+                                      " will be in contact with you if necessary.")
 
         form = FeedbackForm()
-        return render(request, 'feedback.html', {'form': form})
+        # Pass the feedback comments, including the new one, to the template
+        return render(request, 'feedback.html', {'form': form, 'feedback': feedback})
 
 
 class WeatherView(View):
     def get(self, request):
-        form = WeatherForm();
+        form = WeatherForm()
         return render(request, 'weather.html', {'form': form})
 
     def post(self, request):
         form = WeatherForm()
-        return render(request, 'weather.html', {'form': form})
+        form_data = WeatherForm(request.POST)
+        if form_data.is_valid():
+            lat = request.POST['latitude']
+            lon = request.POST['longitude']
+
+            # Pass the lon/lat to a function that makes the API call and returns the info we want as a dict
+            weather_data = functions.call_weather(lat, lon)
+
+            # If the co-ords weren't valid, the function returns false and we get send an error
+            if not weather_data:
+                err_message = "Latitude \"%s\" and/or longitude \"%s\" invalid. Please note" \
+                              " latitude ranges from <b>-90.0&deg S</b> to <b>90.0&deg N</b> and " \
+                              "longitude ranges from <b>-180.0&deg W</b> to <b>180.0&deg E</b>." % (lat, lon)
+                messages.error(request, err_message)
+                return render(request, 'weather.html', {'form': form})
+            else:
+                # Otherwise, render the weather page, passing the dict of weather data to the template
+                return render(request, 'weather.html', {'form': form, 'weather': weather_data})

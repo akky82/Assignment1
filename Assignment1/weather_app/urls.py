@@ -9,6 +9,8 @@ urlpatterns = [
     path('', views.home),
     path('about/', views.about),
     path('future/', views.future),
+    path('disclaimer/', views.disclaimer),
+    path('privacy/', views.privacy),
     path('feedback/', FeedbackView.as_view(), name="feedback"),
     path('weather/', WeatherView.as_view(), name="weather"),
 ]

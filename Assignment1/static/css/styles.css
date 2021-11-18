@@ -1,18 +1,56 @@
 :root {
   font-size: 16px;
   font-family: 'Open Sans';
+  --text-header: #eeeeee;
   --text-primary: #042474;
   --text-secondary: #777777;
   --bg-primary: #d9e9ff;
-  --bg-comment1: #dddddd;
-  --bg-comment2: #eeeeee;
+  --bg-secondary: #eeeeee;
+  --bg-comment1: #d1d1dd;
+  --bg-comment2: #dfdfdf;
+  --warning-text: #dd5555;
+}
+
+.heading-bg {
+  background-color: var(--text-primary);
+  border-radius: 6px;
+  padding: 5px 20px;
+}
+
+h1 {
+  color: var(--text-header);
+}
+
+h2, h3, h4 {
+  color: var(--text-primary);
 }
 
 body {
   color: var(--text-primary);
   background-color: white;
-  margin: 0.5rem;
+  margin: 0rem 0.5rem;
   padding: 0.5rem;
+  height: 100;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+}
+
+.body-text {
+  color: black;
+}
+
+.body-link {
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.body-link:hover {
+  text-decoration: underline;
+}
+
+p {
+  margin-top: 1rem;
 }
 
 main {
@@ -21,41 +59,66 @@ main {
 }
 
 .navbar {
-  position: fixed;
+  position: absolute;
   background-color: var(--bg-primary);
+  border-radius: 6px;
 }
 
 .navbar-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .navbar-item {
-    text-align: right;
-    margin: 0.25rem 2rem;
-    position: relative;
+  text-align: right;
+  margin: 0.25rem 3rem;
+  position: relative;
 }
 
 .navbar-link {
-    display: flex;
-    alight-items: center;
-    text-decoration: none;
-    color: var(--text-secondary);
+  display: flex;
+  alight-items: center;
+  text-decoration: none;
+  color: var(--text-secondary);
 }
 
 .navbar-link:hover {
-    color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+footer {
+  font-size: 14px;
+  align: center;
+  padding: 3px;
+  background-color: var(--text-primary);
+  color: var(--text-header);
+  border-radius: 6px;
+  position: fixed;
+  width: 98.5%;
+  bottom: 0;
+  height: 30px;
+  box-sizing: border-box;
+}
+
+.footer-link {
+  color: var(--bg-comment2);
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: var(--bg-primary);
 }
 
 .container {
-  width: 60%;
+  width: 80%;
   border-radius: 6px;
-  background-color: var(--bg-comment2);
+  background-color: var(--bg-secondary);
   padding: 20px;
+  min-height: 500px;
 }
 
 .row:after {
@@ -65,12 +128,13 @@ main {
 }
 
 .label-wrapper {
-  width: 15%;
+  width: 12%;
   margin: 6px;
   float: left;
 }
 
 .input-wrapper {
+  color: black;
   width: 45%;
   margin: 6px;
   float: left;
@@ -78,30 +142,38 @@ main {
 
 input[type=submit], reset {
   background-color: var(--text-primary);
+  border: 1px solid var(--text-primary);
   color: white;
-  padding: 12px 20px;
-  border: none;
+  padding: .8em 1.2em;
   border-radius: 6px;
   cursor: pointer;
+  transition: 300ms;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, input[type=submit]:focus {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  transition: 300ms;
 }
 
 input[type=reset] {
   background-color: var(--text-primary);
+  border: 1px solid var(--text-primary);
   color: white;
-  padding: 12px 20px;
-  border: none;
+  padding: .8em 1.2em;
   border-radius: 6px;
   cursor: pointer;
+  transition: 300ms;
 }
 
-input[type=reset]:hover {
+input[type=reset]:hover, input[type=reset]:focus {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  transition: 300ms;
+}
+
+input + input {
+    margin-left: .4rem;
 }
 
 textarea {
@@ -110,10 +182,50 @@ textarea {
 
 .comment1 {
   background-color: var(--bg-comment1);
-  width: 55%;
+  width: 90%;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 3px 5px 0 rgba(0,0,0,0.4);
 }
 
 .comment2 {
   background-color: var(--bg-comment2);
-  width: 55%;
+  width: 90%;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 3px 5px 0 rgba(0,0,0,0.4);
+}
+
+.warning-text {
+  color: var(--warning_text);
+}
+
+.new_comment {
+    animation-fill-mode: forwards;
+    animation: load_in 3s;
+}
+
+@keyframes load_in {
+  0% {
+    transform: scale(0.8);
+    opacity: 60%;
+  }
+  60% {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.comment_message {
+  animation: color-change 2s;
+  animation-iteration-count: 3;
+}
+
+@keyframes color-change {
+  0% { color: var(--text-primary); }
+  50% { color: var(--warning-text); }
+  100% { color: var(--text-primary); }
 }

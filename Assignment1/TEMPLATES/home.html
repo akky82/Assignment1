@@ -2,8 +2,22 @@
 {% load static %}
 {% block title %}Django Weather Services{% endblock %}
 {% block heading %}Home{% endblock %}
-<br>
 <!-- Start content -->
 {% block content %}
+<div class="container">
+  <h2>Welcome to Django Weather Services</h2>
+  <div class="body-text">
+    Here at Django Weather Services you can access tools to check the weather
+    anywhere in the world by using Longitude and Latitude co-ordinates.<br><br>
+
+    We are looking to include a function to search by city in the future, as well
+    as other exciting features, but for now, feel free to check out the weather in your area
+    <a href="/weather_app/weather" class="body-link">here</a>.<br><br>
+
+    Please feel free to leave comments about our site and your experiences, as well as suggestions
+    for the future via our Feedback page <a href="/weather_app/feedback" class="body-link">here</a>.
+  </div>
+  <br><hr><br>
+</div>
 <!-- End content -->
 {% endblock %}
